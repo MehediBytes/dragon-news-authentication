@@ -3,7 +3,7 @@ import { AuthContext } from "../provider/AuthProvider";
 
 const Register = () => {
 
-    const { craeteNewUser,setUser } = useContext(AuthContext);
+    const { craeteNewUser, setUser } = useContext(AuthContext);
 
     const handleSubmit = (e) => {
         e.preventDefault();
