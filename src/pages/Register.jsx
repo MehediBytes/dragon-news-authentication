@@ -1,9 +1,13 @@
-import { useContext } from "react";
+/* eslint-disable no-unused-vars */
+import { useContext, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-
-    const { craeteNewUser, setUser } = useContext(AuthContext);
+  
+    const { craeteNewUser, setUser, updateUserProfile } = useContext(AuthContext);
+    const [error, setError] = useState({});
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -11,15 +15,20 @@ const Register = () => {
         // get form data
         const form = new FormData(e.target);
         const name = form.get("name");
+        if(name.length <5){
+            setError({...error, name: "Must be more than 5 characters"})
+        };
         const photo = form.get("photo");
         const email = form.get("email");
         const password = form.get("password");
-        console.log({ name, photo, email, password });
 
         craeteNewUser(email, password)
             .then(result => {
                 const user = result.user;
                 setUser(user);
+                updateUserProfile({displayName: name, photoURL: photo})
+                .then(()=>{navigate("/")})
+                .catch(err=>{console.log(err);})
                 console.log(user);
             })
             .catch((error) => {
@@ -41,6 +50,9 @@ const Register = () => {
                         </label>
                         <input name="name" type="text" placeholder="Enter your name" className="input input-bordered" required />
                     </div>
+
+                    {error.name && <label className="label text-sm text-red-600">{error.name}</label>}
+
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text text-lg font-semibold">Photo URL</span>
