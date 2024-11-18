@@ -28,13 +28,12 @@ const Register = () => {
                 setUser(user);
                 updateUserProfile({displayName: name, photoURL: photo})
                 .then(()=>{navigate("/")})
-                .catch(err=>{console.log(err);})
-                console.log(user);
+                .catch(err=>{alert(err);})
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode, errorMessage);
+                alert(errorCode, errorMessage);
             });
     }
     return (
